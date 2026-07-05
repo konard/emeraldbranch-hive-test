@@ -1,0 +1,48 @@
+---
+import type { ClientFacts, DesignDirection, ResolvedSection } from "../lib/site-builder";
+import GallerySection from "./sections/GallerySection.astro";
+import HeroSection from "./sections/HeroSection.astro";
+import LeadSection from "./sections/LeadSection.astro";
+import MediaFeatureSection from "./sections/MediaFeatureSection.astro";
+import ProofSection from "./sections/ProofSection.astro";
+import ServicesSection from "./sections/ServicesSection.astro";
+
+interface Props {
+  section: ResolvedSection;
+  client: ClientFacts;
+  design: DesignDirection;
+}
+
+const { section, client, design } = Astro.props;
+---
+
+{
+  section.type === "hero" && (
+    <HeroSection section={section} client={client} design={design} />
+  )
+}
+{
+  section.type === "services" && (
+    <ServicesSection section={section} client={client} design={design} />
+  )
+}
+{
+  section.type === "media-feature" && (
+    <MediaFeatureSection section={section} client={client} design={design} />
+  )
+}
+{
+  section.type === "proof" && (
+    <ProofSection section={section} client={client} design={design} />
+  )
+}
+{
+  section.type === "gallery" && (
+    <GallerySection section={section} client={client} design={design} />
+  )
+}
+{
+  section.type === "lead" && (
+    <LeadSection section={section} client={client} design={design} />
+  )
+}

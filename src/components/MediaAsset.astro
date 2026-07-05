@@ -1,0 +1,62 @@
+---
+import type { ResolvedMediaSlot } from "../lib/site-builder";
+
+interface Props {
+  media: ResolvedMediaSlot;
+  class?: string;
+  loading?: "eager" | "lazy";
+  background?: boolean;
+}
+
+const {
+  media,
+  class: className = "",
+  loading = "lazy",
+  background = false
+} = Astro.props;
+
+const asset = media.asset;
+const cropPositions = {
+  center: "center",
+  top: "center top",
+  bottom: "center bottom",
+  left: "left center",
+  right: "right center"
+};
+const style = `object-position: ${cropPositions[asset.crop ?? "center"]};`;
+const classes = [
+  "media-asset",
+  `media-asset--${asset.type}`,
+  background ? "media-asset--background" : "",
+  className
+]
+  .filter(Boolean)
+  .join(" ");
+---
+
+{
+  asset.type === "video" ? (
+    <video
+      class={classes}
+      src={asset.src}
+      poster={asset.poster}
+      aria-label={asset.alt}
+      autoplay={background}
+      muted={background}
+      loop={background}
+      playsinline
+      controls={!background}
+      preload={background ? "metadata" : "none"}
+      style={style}
+    />
+  ) : (
+    <img
+      class={classes}
+      src={asset.src}
+      alt={asset.alt}
+      loading={loading}
+      decoding="async"
+      style={style}
+    />
+  )
+}

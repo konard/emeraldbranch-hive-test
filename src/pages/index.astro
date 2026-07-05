@@ -1,0 +1,60 @@
+---
+import PersistentActionBar from "../components/PersistentActionBar.astro";
+import SectionRenderer from "../components/SectionRenderer.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+import { siteModel } from "../config/site";
+import {
+  collectPendingFacts,
+  getLeadIntegration
+} from "../lib/site-builder";
+import "../styles/global.css";
+
+const pendingFacts = collectPendingFacts(siteModel);
+const leadIntegration = getLeadIntegration(siteModel);
+const tokens = siteModel.design.tokens;
+const themeStyle = `
+  --accent: ${tokens.accent};
+  --canvas: ${tokens.canvas};
+  --text: ${tokens.text};
+  --muted-text: ${tokens.mutedText};
+  --alternate-surface: ${tokens.alternateSurface};
+  --control-radius: ${tokens.radius};
+  --motion: ${tokens.transition};
+`;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={siteModel.description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{siteModel.title}</title>
+  </head>
+  <body style={themeStyle}>
+    <SiteHeader client={siteModel.client} sections={siteModel.sections} />
+    <main>
+      {
+        siteModel.sections.map((section) => (
+          <SectionRenderer
+            section={section}
+            client={siteModel.client}
+            design={siteModel.design}
+          />
+        ))
+      }
+    </main>
+    <PersistentActionBar
+      client={siteModel.client}
+      integration={leadIntegration}
+    />
+    <script
+      id="operator-pending-facts"
+      type="application/json"
+      is:inline
+      set:html={JSON.stringify(pendingFacts)}
+    />
+  </body>
+</html>

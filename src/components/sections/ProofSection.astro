@@ -1,0 +1,46 @@
+---
+import type { ClientFacts, DesignDirection, ResolvedSection } from "../../lib/site-builder";
+import MediaAsset from "../MediaAsset.astro";
+
+interface Props {
+  section: ResolvedSection;
+  client: ClientFacts;
+  design: DesignDirection;
+}
+
+const { section, client } = Astro.props;
+const media = section.media[0];
+const facts = section.facts ?? [];
+---
+
+<section
+  id={section.id}
+  class={`section section--proof media-placement--${media?.placement ?? "left"}`}
+  data-section-type={section.type}
+  data-section-variant={section.variant}
+>
+  <div class="section__inner proof-layout">
+    {
+      media && (
+        <figure class="media-frame">
+          <MediaAsset media={media} />
+        </figure>
+      )
+    }
+    <div class="proof-copy">
+      <p class="eyebrow">{client.serviceArea.join(" / ")}</p>
+      <h2>{section.headline}</h2>
+      {section.body && <p>{section.body}</p>}
+      <dl class="fact-strip">
+        {
+          facts.map((fact) => (
+            <div>
+              <dt>{fact.label}</dt>
+              <dd>{fact.value}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+  </div>
+</section>

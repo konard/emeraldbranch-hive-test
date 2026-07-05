@@ -1,0 +1,37 @@
+---
+import type { ClientFacts, DesignDirection, ResolvedSection } from "../../lib/site-builder";
+import CtaLinks from "../CtaLinks.astro";
+import MediaAsset from "../MediaAsset.astro";
+
+interface Props {
+  section: ResolvedSection;
+  client: ClientFacts;
+  design: DesignDirection;
+}
+
+const { section, client } = Astro.props;
+const media = section.media[0];
+---
+
+<section
+  id={section.id}
+  class={`section section--media-feature media-placement--${media?.placement ?? "right"}`}
+  data-section-type={section.type}
+  data-section-variant={section.variant}
+>
+  <div class="section__inner media-feature">
+    <div class="media-feature__copy">
+      <p class="eyebrow">{section.eyebrow ?? client.primaryOffer}</p>
+      <h2>{section.headline}</h2>
+      {section.body && <p>{section.body}</p>}
+      <CtaLinks ctas={section.ctas} />
+    </div>
+    {
+      media && (
+        <figure class="media-frame">
+          <MediaAsset media={media} />
+        </figure>
+      )
+    }
+  </div>
+</section>

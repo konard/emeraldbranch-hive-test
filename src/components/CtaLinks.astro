@@ -1,0 +1,22 @@
+---
+import type { Cta } from "../lib/site-builder";
+
+interface Props {
+  ctas?: Cta[];
+  align?: "left" | "center";
+}
+
+const { ctas = [], align = "left" } = Astro.props;
+---
+
+{
+  ctas.length > 0 && (
+    <div class={`cta-row cta-row--${align}`}>
+      {ctas.map((cta) => (
+        <a class={`button button--${cta.intent}`} href={cta.href}>
+          {cta.label}
+        </a>
+      ))}
+    </div>
+  )
+}

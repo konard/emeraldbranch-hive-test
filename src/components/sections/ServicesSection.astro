@@ -1,0 +1,37 @@
+---
+import type { ClientFacts, DesignDirection, ResolvedSection } from "../../lib/site-builder";
+
+interface Props {
+  section: ResolvedSection;
+  client: ClientFacts;
+  design: DesignDirection;
+}
+
+const { section, client } = Astro.props;
+const services = section.items ?? client.services;
+---
+
+<section
+  id={section.id}
+  class="section section--services"
+  data-section-type={section.type}
+  data-section-variant={section.variant}
+>
+  <div class="section__inner">
+    <div class="section__heading">
+      <p class="eyebrow">{client.businessName}</p>
+      <h2>{section.headline}</h2>
+      {section.body && <p>{section.body}</p>}
+    </div>
+    <div class="service-grid">
+      {
+        services.map((service) => (
+          <article class="service-card">
+            <h3>{service.title}</h3>
+            <p>{service.description}</p>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>

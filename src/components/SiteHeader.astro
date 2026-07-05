@@ -1,0 +1,54 @@
+---
+import type { ClientFacts, ResolvedSection } from "../lib/site-builder";
+
+interface Props {
+  client: ClientFacts;
+  sections: ResolvedSection[];
+}
+
+const { client, sections } = Astro.props;
+const navLabels: Record<string, string> = {
+  services: "Services",
+  process: "Process",
+  proof: "Proof",
+  gallery: "Gallery",
+  lead: "Book"
+};
+const navItems = sections
+  .filter((section) => navLabels[section.id])
+  .map((section) => ({
+    href: `#${section.id}`,
+    label: navLabels[section.id]
+  }));
+---
+
+<header class="site-header" aria-label="Site header">
+  <a class="wordmark" href="#hero" aria-label={`${client.businessName} home`}>
+    {client.businessName}
+  </a>
+  <nav class="desktop-nav" aria-label="Primary navigation">
+    {
+      navItems.map((item) => (
+        <a class="nav-link" href={item.href}>
+          {item.label}
+        </a>
+      ))
+    }
+  </nav>
+  <details class="mobile-nav">
+    <summary aria-label="Open navigation">
+      <span></span>
+      <span></span>
+      <span></span>
+    </summary>
+    <nav aria-label="Mobile navigation">
+      {
+        navItems.map((item) => (
+          <a class="nav-link" href={item.href}>
+            {item.label}
+          </a>
+        ))
+      }
+    </nav>
+  </details>
+</header>

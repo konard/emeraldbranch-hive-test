@@ -1,0 +1,36 @@
+---
+import type { ClientFacts, DesignDirection, ResolvedSection } from "../../lib/site-builder";
+import MediaAsset from "../MediaAsset.astro";
+
+interface Props {
+  section: ResolvedSection;
+  client: ClientFacts;
+  design: DesignDirection;
+}
+
+const { section, client } = Astro.props;
+---
+
+<section
+  id={section.id}
+  class="section section--gallery"
+  data-section-type={section.type}
+  data-section-variant={section.variant}
+>
+  <div class="section__inner">
+    <div class="section__heading">
+      <p class="eyebrow">{client.primaryOffer}</p>
+      <h2>{section.headline}</h2>
+      {section.body && <p>{section.body}</p>}
+    </div>
+    <div class="gallery-grid">
+      {
+        section.media.map((media) => (
+          <figure class="gallery-item">
+            <MediaAsset media={media} />
+          </figure>
+        ))
+      }
+    </div>
+  </div>
+</section>

@@ -1,0 +1,19 @@
+---
+import type { ClientFacts, IntegrationSettings } from "../lib/site-builder";
+
+interface Props {
+  client: ClientFacts;
+  integration: IntegrationSettings;
+}
+
+const { client, integration } = Astro.props;
+---
+
+<aside class="chat-bar" aria-label="Quick contact">
+  <a class="chat-bar__prompt" href="#lead" data-chatbot-intent={integration.chatbotIntent}>
+    Ask about {client.primaryOffer}
+  </a>
+  <a class="chat-bar__booking" href={integration.bookingUrl ?? "#lead"}>
+    Schedule
+  </a>
+</aside>
